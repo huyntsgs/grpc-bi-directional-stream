@@ -15,8 +15,8 @@ func main() {
 	//debug.SetGCPercent(10)
 	// Using two parameters -len is number of integers will be sent to server
 	// and -max value of these integers.
-	arrLen := flag.Int("len", 1000, "Max int number will be send by stream")
-	maxValue := flag.Int("max", 2011888999, "Max value of numbers")
+	arrLen := flag.Int("len", 50, "Max int number will be send by stream")
+	maxValue := flag.Int("max", 10000, "Max value of numbers")
 	flag.Parse()
 
 	done := make(chan struct{})

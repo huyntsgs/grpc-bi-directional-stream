@@ -4,7 +4,7 @@ import (
 	"log"
 	"net"
 
-	"github.com/huyntsgs/maxnumber/api"
+	"github.com/huyntsgs/grpc-bi-directional-stream/api"
 	"google.golang.org/grpc"
 )
 
