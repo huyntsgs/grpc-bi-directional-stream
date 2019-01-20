@@ -30,8 +30,6 @@ func main() {
 		log.Fatalf("Can not call FindMaxNumber rpc: %v", err)
 	}
 
-	//ctx := stream.Context()
-
 	// Generate slice integers.
 	req, res := mathclient.GenIntSlice(*arrLen, *maxValue)
 	log.Println("Request stream", req)
@@ -42,13 +40,6 @@ func main() {
 		close(done)
 	}()
 
-	// go func() {
-	// 	<-ctx.Done()
-	// 	if err := ctx.Err(); err != nil {
-	// 		log.Println(err)
-	// 	}
-	// 	close(done)
-	// }()
 	<-done
 	log.Println("Received result:", ret)
 	log.Println("Expected response:", res)
