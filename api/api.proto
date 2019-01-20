@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package protobuf;
+
+service Math {
+	rpc FindMaxNumber(stream Request) returns (stream Response);
+}
+
+message Request {
+	int32 number = 1;
+	bytes sig = 2;
+	bytes publicKey = 3;
+}
+
+message Response {
+	int32 res = 1;
+}
