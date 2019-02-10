@@ -18,7 +18,7 @@ Example: The client will send a stream of number (1,5,3,6,2,20) and each number
 will be signed by the private key of the client and the server will respond with a
 stream of numbers (1,5,6,20).
 
-    =======================
+ =======================
 
 Firstly needs to define the protobuf file. We also use ecdsa to generate keypair for client. For cryptography function, we create utility functions in cryptoutil package.
 
@@ -29,9 +29,10 @@ service Math {
         rpc FindMaxNumber(stream Request) returns (stream Response);
 }
 message Request {
-        int32 number = 1;
-        bytes sig = 2;
-        bytes publicKey = 3;
+	int32 number = 1;	
+	bytes publicKey = 2;
+	bytes r = 3;
+	bytes s = 4;
 }
 message Response {
         int32 res = 1;
@@ -68,6 +69,6 @@ Contains grpc server for listening clients connection, stream function for recei
 - test:
 Includes some integration and load test cases.
 
-I just fixed bug related to sign and verify function. Actually, size of signature is not always 64 bytes. It depends on size of r and s. With the number signature, there are many cases are 63 bytes.
+I have fixed bugs related to sign and verify function. Actually, size of signature is not always 64 bytes. It depends on size of r and s. With the number signature, there are many cases the signature size is 63 bytes.
 
 

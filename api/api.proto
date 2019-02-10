@@ -7,11 +7,10 @@ service Math {
 }
 
 message Request {
-	int32 number = 1;
-	bytes sig = 2;	
-	bytes publicKey = 3;
-	bytes r = 4;
-	bytes s = 5;
+	int32 number = 1;	
+	bytes publicKey = 2;
+	bytes r = 3;
+	bytes s = 4;
 }
 
 message Response {

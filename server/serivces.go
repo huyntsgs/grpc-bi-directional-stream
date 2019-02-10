@@ -45,7 +45,7 @@ func (ms *MathService) FindMaxNumber(stream protobuf.Math_FindMaxNumberServer) e
 			log.Printf("Can not convert number %d to byte %v", req.Number, err)
 			continue
 		}
-		// Parse public only at first time.
+		// Parse public key only at first time.
 		if max == -1 {
 			pub, err = cryptoutil.ParsePublicKey(req.PublicKey)
 			if err != nil {
@@ -71,7 +71,7 @@ func (ms *MathService) FindMaxNumber(stream protobuf.Math_FindMaxNumberServer) e
 		} else {
 			notVerified++
 			log.Printf("Number is not signed: %d-%x\n", req.Number, data)
-			log.Printf("\nSig %x. \nPub %x\n", req.Sig, req.PublicKey)
+			log.Printf("\nSig %x %x. \nPub %x\n", req.R, req.S, req.PublicKey)
 		}
 	}
 	return nil
