@@ -25,18 +25,15 @@ func GenerateKeyPair() (*ecdsa.PrivateKey, *ecdsa.PublicKey, error) {
 }
 
 // Sign hashes data and sign. Returns byte slice of r and s.
-func Sign(priv *ecdsa.PrivateKey, data []byte) ([]byte, error) {
+func Sign(priv *ecdsa.PrivateKey, data []byte) ([]byte, []byte, error) {
 	hash := Hash256(data)
 	r, s, err := ecdsa.Sign(rand.Reader, priv, hash)
-	sig := append(r.Bytes(), s.Bytes()...)
-	return sig, err
+	return r.Bytes(), s.Bytes(), err
 }
 
 // Verify verifies data base on signature. The hashData is already hashed.
-func Verify(pub *ecdsa.PublicKey, hashData []byte, signature []byte) bool {
-	r := new(big.Int).SetBytes(signature[0 : len(signature)/2])
-	s := new(big.Int).SetBytes(signature[len(signature)/2:])
-	return ecdsa.Verify(pub, hashData, r, s)
+func Verify(pub *ecdsa.PublicKey, hashData, r, s []byte) bool {
+	return ecdsa.Verify(pub, hashData, new(big.Int).SetBytes(r), new(big.Int).SetBytes(s))
 }
 
 // ParsePublicKey returns new instance of public key from bytes slice

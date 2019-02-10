@@ -49,7 +49,7 @@ func (mathClient *MathClient) Connect() {
 // signature and public key to server.
 func (mathClient *MathClient) SendStream(stream protobuf.Math_FindMaxNumberClient, arrs []int32) error {
 	pub := cryptoutil.SerializePublicKey(mathClient.PubKey)
-	sig := make([]byte, 0)
+	//sig := make([]byte, 0)
 	data := make([]byte, 0)
 	var err error
 	for _, i := range arrs {
@@ -59,13 +59,14 @@ func (mathClient *MathClient) SendStream(stream protobuf.Math_FindMaxNumberClien
 			return err
 		}
 
-		sig, err = cryptoutil.Sign(mathClient.PrivKey, data)
+		r, s, err := cryptoutil.Sign(mathClient.PrivKey, data)
 		if err != nil {
-			log.Printf("Can not sign data: %v", err)
+			log.Printf("Can not sign number %d: %v", i, err)
 			return err
 		}
+
 		time.Sleep(50 * time.Millisecond)
-		err = stream.Send(&protobuf.Request{Number: i, Sig: sig, PublicKey: pub})
+		err = stream.Send(&protobuf.Request{Number: i, R: r, S: s, PublicKey: pub})
 
 		if err != nil {
 			log.Printf("Can not send stream %v", err)
@@ -203,12 +204,13 @@ func (mathClient *MathClient) worker(task chan Task, wg *sync.WaitGroup, reqs []
 			return
 		}
 
-		sig, err := cryptoutil.Sign(mathClient.PrivKey, b)
+		r, s, err := cryptoutil.Sign(mathClient.PrivKey, b)
 		if err != nil {
 			log.Printf("Can not sign number %d: %v", task.Number, err)
 			return
 		}
-		req := &protobuf.Request{Number: task.Number, Sig: sig, PublicKey: pub}
+
+		req := &protobuf.Request{Number: task.Number, R: r, S: s, PublicKey: pub}
 		reqs[task.Id] = req
 		time.Sleep(50 * time.Millisecond)
 		wg.Done()

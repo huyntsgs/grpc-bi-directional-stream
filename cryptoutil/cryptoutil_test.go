@@ -9,9 +9,9 @@ func TestSignVerifyInts(t *testing.T) {
 	priv, pub, _ := GenerateKeyPair()
 	for _, i := range numbers {
 		data, _ := IntToBytes(i)
-		sig, _ := Sign(priv, data)
+		r, s, _ := Sign(priv, data)
 		hash := Hash256(data)
-		isVerifed := Verify(pub, hash, sig)
+		isVerifed := Verify(pub, hash, r, s)
 		if !isVerifed {
 			t.Fail()
 		}
@@ -23,10 +23,10 @@ func TestSignVerifyString(t *testing.T) {
 	priv, pub, _ := GenerateKeyPair()
 	for _, s := range dataTest {
 		data := []byte(s)
-		sig, _ := Sign(priv, data)
+		r, s, _ := Sign(priv, data)
 
 		hash := Hash256(data)
-		isVerifed := Verify(pub, hash, sig)
+		isVerifed := Verify(pub, hash, r, s)
 		if !isVerifed {
 			t.Fail()
 		}
@@ -38,7 +38,7 @@ func TestWrongSig(t *testing.T) {
 	priv, pub, _ := GenerateKeyPair()
 	for _, s := range dataTest {
 		data := []byte(s)
-		sig, _ := Sign(priv, data)
+		r, s, _ := Sign(priv, data)
 
 		hash := Hash256(data)
 		if hash[0] != 0x00 {
@@ -56,7 +56,7 @@ func TestWrongSig(t *testing.T) {
 		} else {
 			hash[15] = 0xff
 		}
-		isVerifed := Verify(pub, hash, sig)
+		isVerifed := Verify(pub, hash, r, s)
 		if isVerifed {
 			t.Fail()
 		}

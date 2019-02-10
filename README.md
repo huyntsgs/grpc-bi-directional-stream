@@ -68,6 +68,6 @@ Contains grpc server for listening clients connection, stream function for recei
 - test:
 Includes some integration and load test cases.
 
-There still exists issue that when stream of number is big (~1000), the signature created by ecdsa is not correct. Number of fail signature is about 10-40/1000. I tried to accelerate the signing by using worker pool, the number of fail signature has reduced but there is about 1-10/1000 fail signatures. 
+I just fixed bug related to sign and verify function. Actually, size of signature is not always 64 bytes. It depends on size of r and s. In this number signature, there are many cases is 63 bytes.
 
 

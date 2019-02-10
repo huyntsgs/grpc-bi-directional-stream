@@ -56,7 +56,7 @@ func (ms *MathService) FindMaxNumber(stream protobuf.Math_FindMaxNumberServer) e
 
 		reqs = append(reqs, req.Number)
 		hash := cryptoutil.Hash256(data)
-		isVerified := cryptoutil.Verify(pub, hash, req.Sig)
+		isVerified := cryptoutil.Verify(pub, hash, req.R, req.S)
 
 		if isVerified {
 			if max == -1 {
