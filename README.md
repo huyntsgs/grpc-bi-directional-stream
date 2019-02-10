@@ -68,6 +68,6 @@ Contains grpc server for listening clients connection, stream function for recei
 - test:
 Includes some integration and load test cases.
 
-I just fixed bug related to sign and verify function. Actually, size of signature is not always 64 bytes. It depends on size of r and s. In this number signature, there are many cases is 63 bytes.
+I just fixed bug related to sign and verify function. Actually, size of signature is not always 64 bytes. It depends on size of r and s. With the number signature, there are many cases are 63 bytes.
 
 
